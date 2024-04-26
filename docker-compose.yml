@@ -3,6 +3,6 @@ version: '1.5'
 services:
   app:
     build: .
-    container_name: nextjs13-wealth
+    container_name: nextjs14-blockchain
     ports:
       - "3004:3000"
