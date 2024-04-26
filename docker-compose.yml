@@ -5,4 +5,4 @@ services:
     build: .
     container_name: nextjs13-wealth
     ports:
-      - "3002:3000"
+      - "3004:3000"
