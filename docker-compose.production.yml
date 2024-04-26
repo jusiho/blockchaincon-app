@@ -1,0 +1,9 @@
+version: '1.5'
+
+services:
+  app:
+    image: docker-nextjs
+    build:
+      dockerfile: Dockerfile.production
+    ports:
+      - "3002:3000"

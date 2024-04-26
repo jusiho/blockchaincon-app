@@ -1,0 +1,8 @@
+version: '1.5'
+
+services:
+  app:
+    build: .
+    container_name: nextjs13-wealth
+    ports:
+      - "3002:3000"
