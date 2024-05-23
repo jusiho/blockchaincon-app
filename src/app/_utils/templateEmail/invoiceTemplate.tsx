@@ -304,7 +304,7 @@ export async function invoiceTemplate({ emailData }: PropsHtml) {
                                         <img
                                           align="center"
                                           border="0"
-                                          src="https://wealthexpo.la/wp-content/uploads/2024/05/MAILING-WEALTH.png"
+                                          src="https://blockchaincon.la/wp-content/uploads/2024/05/MAILING.png"
                                           alt=""
                                           title=""
                                           style="
@@ -618,7 +618,7 @@ export async function invoiceTemplate({ emailData }: PropsHtml) {
                                   align="left"
                                 >
                                   <img
-                                    src="https://wealthexpo.la/wp-content/uploads/2024/05/FINAL-MAILING-WEALTH.png"
+                                    src="https://blockchaincon.la/wp-content/uploads/2024/05/FINAL-MAILING.png"
                                     alt=""
                                     style="
                                       border: 0;

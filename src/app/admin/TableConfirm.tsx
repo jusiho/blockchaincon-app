@@ -99,10 +99,10 @@ async function sendEmailConfirmation({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "Wealth Expo Peru 2024 <info@wealthexpo.la>",
-          emailFrom: "info@wealthexpo.la",
+          from: "Blockchaincon Colombia 2024 <entradas@blockchaincon.la>",
+          emailFrom: "entradas@blockchaincon.la",
           emailTo,
-          replyTo: "no-reply@wealthexpo.la",
+          replyTo: "no-reply@blockchaincon.la",
           subject: "Registration Confirmed (General Ticket)",
           html: htmlResponse,
         }),
