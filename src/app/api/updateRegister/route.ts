@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { AuthOptions } from "../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export async function POST(request: Request) {
+  const session = await getServerSession(AuthOptions);
+  const token = session?.user.token;
   // obetener dato POST
   const body = await request.json();
   const { id_register, state } = body;
@@ -10,6 +14,7 @@ export async function POST(request: Request) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       id_register: `${id_register}`,
