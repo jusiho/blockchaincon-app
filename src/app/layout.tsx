@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "./providers";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import AuthContext from "./Providers/NextAuth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {/* <ThemeSwitcher /> */}
-          {children}
-        </ThemeProvider>
+        <AuthContext>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {/* <ThemeSwitcher /> */}
+            {children}
+          </ThemeProvider>
+        </AuthContext>
       </body>
     </html>
   );

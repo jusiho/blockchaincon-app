@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { signOut, useSession } from "next-auth/react";
 
 import { useCallback, useMemo, useState } from "react";
 import {
@@ -62,11 +63,21 @@ const statusOptions = [
   { name: "Paused", uid: "paused" },
   { name: "Vacation", uid: "vacation" },
 ];
+type StatusColorMap = {
+  [key: string]:
+    | "default"
+    | "success"
+    | "danger"
+    | "warning"
+    | "primary"
+    | "secondary"
+    | undefined;
+};
 
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
+const statusColorMap: StatusColorMap = {
+  "1": "success",
+  "3": "danger",
+  "0": "warning",
 };
 
 interface SortDescriptor {
@@ -83,45 +94,29 @@ type sendEmailConfirmationProps = {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-async function sendEmailConfirmation({
-  emailTo,
-  htmlResponse,
-}: sendEmailConfirmationProps) {
-  console.log("Sending email to:", emailTo);
-  console.log(`${process.env.NEXT_PUBLIC_URL_LOCAL}/api/sendNodemailer`);
-
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_URL_LOCAL}/api/sendNodemailer`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: "Blockchaincon Colombia 2024 <entradas@blockchaincon.la>",
-          emailFrom: "entradas@blockchaincon.la",
-          emailTo,
-          replyTo: "no-reply@blockchaincon.la",
-          subject: "Registration Confirmed (General Ticket)",
-          html: htmlResponse,
-        }),
-      }
-    );
-    console.log("Response:", response);
-
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log("Email sent successfully:", responseData);
-    } else {
-      console.error("Failed to send email:", response.status);
-    }
-  } catch (error) {
-    console.error("Error in sending email:", error);
-  }
+interface User {
+  id_register: string;
+  id_unique: string;
+  name: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  company: string;
+  country: string;
+  know_exp: string;
+  level_exp: string;
+  category: string;
+  edition: string;
+  type_ticket: string;
+  state: string;
+  actions?: string;
 }
 
 export default function TableWith() {
+  const { data: session, status } = useSession();
+  if (session) {
+    console.log(session);
+  }
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filterValue, setFilterValue] = useState("");
@@ -144,12 +139,14 @@ export default function TableWith() {
     isLoading,
     mutate,
   } = useSWR(
-    `${process.env.NEXT_PUBLIC_URL_LOCAL}/api/registerFree?page=${page}&perPage=${rowsPerPage}&search=${search}`,
+    `${process.env.NEXT_PUBLIC_URL_LOCAL}/api/registerFree?page=${page}&perPage=${rowsPerPage}&search=${search}&endpoint=records-admin`,
     fetcher,
     {
       keepPreviousData: true,
     }
   );
+  console.log(users);
+  
 
   const pages = users?.total_pages;
 
@@ -210,7 +207,7 @@ export default function TableWith() {
     }
   }, [loading]);
 
-  const handleButtonApprove = async (user: any) => {
+  const handleButtonApprove = async (user: User) => {
     console.log("Aprobar");
 
     setLoading(true);
@@ -230,8 +227,8 @@ export default function TableWith() {
       );
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data);
-        console.log(user);
+        // console.log(data);
+        // console.log(user);
 
         // const emailTo = user.email;
         // const emailData = {
@@ -265,7 +262,7 @@ export default function TableWith() {
       // Code to handle error
     } finally {
       console.log("Finalmente");
-      
+
       setLoading(false);
       mutate();
     }
@@ -273,26 +270,96 @@ export default function TableWith() {
     console.log("Aprobar", user);
   };
 
-  const renderCell = useCallback((user: any, columnKey: any) => {
-    const cellValue = user[columnKey];
+  const handleButtonRefuse = async (user: User) => {
+    console.log("Aprobar");
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_LOCAL}/api/updateRegister`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            id_register: user.id_register,
+            state: "3",
+          }),
+        }
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        // console.log(data);
+        // console.log(user);
+
+        // const emailTo = user.email;
+        // const emailData = {
+        //   id_register: user.id_register,
+        //   id_unique: user.id_unique,
+        //   name: user.name,
+        //   lastname: user.lastname,
+        //   email: user.email,
+        //   phone: user.phone,
+        //   company: user.company,
+        //   country: user.country,
+        //   know_exp: user.know_exp,
+        //   level_exp: user.level_exp,
+        //   category: user.category,
+        //   edition: user.edition,
+        //   type_ticket: user.type_ticket,
+        // };
+        // console.log(emailData);
+
+        // const htmlResponse = await invoiceTemplate({ emailData });
+        // console.log(htmlResponse);
+
+        // // Función para enviar el correo electrónico de forma asincrónica
+        // sendEmailConfirmation({ emailTo, htmlResponse });
+
+        // Code to handle successful response
+      } else {
+        // Code to handle unsuccessful response
+      }
+    } catch (error) {
+      // Code to handle error
+    } finally {
+      console.log("Finalmente");
+
+      setLoading(false);
+      mutate();
+    }
+
+    console.log("Aprobar", user);
+  };
+
+  const renderCell = useCallback((user: User, columnKey: any) => {
+    const cellValue = user[columnKey as keyof User];
 
     switch (columnKey) {
+      // ...
+
       case "state":
         return (
           <Chip
             className="capitalize border-none gap-1 text-default-600"
-            color={user.state == "1" ? "success" : "danger"}
+            color={statusColorMap[user.state as keyof StatusColorMap]}
             size="sm"
             variant="dot"
           >
-            {cellValue == "1" ? "Aprobado" : "Proceso"}
+            {cellValue === "1"
+              ? "Activo"
+              : cellValue === "3"
+              ? "Rechazado"
+              : "Pendiente"}
           </Chip>
         );
       case "actions":
         return (
           <div className="flex gap-2">
             <Button onClick={() => handleButtonApprove(user)}>Aprobar</Button>
-            <Button>Rechazar</Button>
+            <Button onClick={() => handleButtonRefuse(user)}>Rechazar</Button>
           </div>
         );
       default:
@@ -337,6 +404,14 @@ export default function TableWith() {
             onClear={() => setFilterValue("")}
             onValueChange={onSearchChange}
           />
+        </div>
+        <div>
+          <button
+            className="bg-primary text-white rounded-md px-4 py-2"
+            onClick={() => signOut()}
+          >
+            Salir
+          </button>
         </div>
       </div>
     );

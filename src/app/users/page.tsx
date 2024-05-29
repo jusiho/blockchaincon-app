@@ -28,7 +28,7 @@ export default async function Home() {
         <Link href="/">
           <Image
             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] "
-            src="/landing/logo-blockchaincon.png"
+            src="/landing/logo-main.png"
             alt="Next.js Logo"
             width={250}
             height={100}
