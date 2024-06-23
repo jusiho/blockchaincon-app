@@ -7,20 +7,21 @@ const secret = process.env.NEXTAUTH_SECRET;
 const allowedOrigins = [
   "http://127.0.0.1:3000",
   "http://localhost:3000",
-  "https://app.blockchaincon.la"
+  "https://app.blockchaincon.la",
 ];
 
 export async function middleware(req: NextRequest) {
+  console.log("secret: ", secret);
+
   const session = await getToken({ req, secret });
   console.log("middleware");
-  console.log("Sesseion : ",session);
+  console.log("Sesseion : ", session);
 
   const url = req.nextUrl.clone();
   const requestPage = req.nextUrl.pathname;
   // console.log(requestPage);
   const origin = req.headers.get("origin");
-  console.log("origin : ",origin);
-  
+  console.log("origin : ", origin);
 
   if (origin && !allowedOrigins.includes(origin)) {
     // console.log("Error middleware");
@@ -66,8 +67,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/admin",
-    "/login",
-  ],
+  matcher: ["/admin", "/login"],
 };
