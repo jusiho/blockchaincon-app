@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   // console.log(requestPage);
   const origin = req.headers.get("origin");
 
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && !allowedOrigins.includes(origin)) {
     // console.log("Error middleware");
 
     return new NextResponse(null, {
