@@ -10,15 +10,17 @@ const allowedOrigins = [
   "https://app.blockchaincon.la"
 ];
 
-export async function middleware(req: NextRequest, ev: NextFetchEvent) {
+export async function middleware(req: NextRequest) {
   const session = await getToken({ req, secret });
   console.log("middleware");
-  console.log(session);
+  console.log("Sesseion : ",session);
 
   const url = req.nextUrl.clone();
   const requestPage = req.nextUrl.pathname;
   // console.log(requestPage);
   const origin = req.headers.get("origin");
+  console.log("origin : ",origin);
+  
 
   if (origin && !allowedOrigins.includes(origin)) {
     // console.log("Error middleware");
