@@ -114,9 +114,7 @@ interface User {
 
 export default function TableWith() {
   const { data: session, status } = useSession();
-  if (session) {
-    console.log(session);
-  }
+
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filterValue, setFilterValue] = useState("");
@@ -146,7 +144,6 @@ export default function TableWith() {
       keepPreviousData: true,
     }
   );
-  console.log(users);
 
   const pages = users?.total_pages;
 
@@ -178,7 +175,6 @@ export default function TableWith() {
         Array.from(statusFilter).includes(user.state)
       );
     }
-    console.log(filteredUsers);
 
     return filteredUsers;
   }, [users?.data, filterValue, statusFilter]);
@@ -208,7 +204,6 @@ export default function TableWith() {
   }, [loading]);
 
   const handleButtonApprove = async (user: User) => {
-    console.log("Aprobar");
 
     setLoading(true);
     try {
@@ -261,17 +256,14 @@ export default function TableWith() {
     } catch (error) {
       // Code to handle error
     } finally {
-      console.log("Finalmente");
 
       setLoading(false);
       mutate();
     }
 
-    console.log("Aprobar", user);
   };
 
   const handleButtonRefuse = async (user: User) => {
-    console.log("Aprobar");
 
     setLoading(true);
     try {
