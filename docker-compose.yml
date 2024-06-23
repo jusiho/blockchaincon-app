@@ -6,3 +6,5 @@ services:
     container_name: nextjs14-blockchain
     ports:
       - "3004:3000"
+    env_file:
+      - .env
