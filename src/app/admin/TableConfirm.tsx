@@ -204,7 +204,6 @@ export default function TableWith() {
   }, [loading]);
 
   const handleButtonApprove = async (user: User) => {
-
     setLoading(true);
     try {
       const response = await fetch(
@@ -256,15 +255,12 @@ export default function TableWith() {
     } catch (error) {
       // Code to handle error
     } finally {
-
       setLoading(false);
       mutate();
     }
-
   };
 
   const handleButtonRefuse = async (user: User) => {
-
     setLoading(true);
     try {
       const response = await fetch(
@@ -514,6 +510,17 @@ export default function TableWith() {
         topContent={topContent}
         topContentPlacement="outside"
         onSelectionChange={(key: string | Set<any>) => {
+          console.log(key as Set<any>);
+          if (key instanceof Set) {
+            console.log(key);
+
+            // Usando el operador de propagación para convertir el Set en un array
+            let arrayFromSet = Array.from(key);
+            console.log(arrayFromSet);
+
+            setChecked(arrayFromSet);
+            console.log(arrayFromSet);
+          }
           setSelectedKeys(key);
         }}
         onSortChange={(key: any) => setSortDescriptor(key)}
