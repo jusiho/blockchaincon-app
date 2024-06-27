@@ -11,8 +11,6 @@ const allowedOrigins = [
 ];
 
 export async function middleware(req: NextRequest) {
-  console.log("secret: ", secret);
-
   const session = await getToken({ req, secret });
   console.log("middleware");
   console.log("Sesseion : ", session);
@@ -47,7 +45,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   } else {
     if (requestPage === "/login") {
-      url.pathname = "/cursos";
+      url.pathname = "/";
       return NextResponse.redirect(url);
     }
   }

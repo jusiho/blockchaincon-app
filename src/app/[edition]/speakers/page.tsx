@@ -9,17 +9,12 @@ type Props = {
     edition: string;
   };
 };
+
 export default async function Page({ params }: Props) {
   const { edition } = params;
   if (!["peru", "colombia", "mexico"].includes(edition)) {
     notFound();
   }
-  const session = await getServerSession(AuthOptions);
-  if (!session) {
-    notFound();
-  }
-
-  const token = session.user.token;
 
   const responseSpeakers = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/wp-json/myplugin/v1/speakers?page=1&per_page=50`,
@@ -27,12 +22,12 @@ export default async function Page({ params }: Props) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     }
   );
   const data = await responseSpeakers.json();
-
+  console.log(data);
+  
   const speakers = data.speakers;
 
   const filteredSpeakers = speakers.filter(
@@ -43,11 +38,8 @@ export default async function Page({ params }: Props) {
     <>
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12">
         <div className="text-center pb-12">
-          <h2 className="text-base font-bold text-indigo-600">
-            We have the best equipment
-          </h2>
-          <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">
-            Check our awesome team members
+          <h1 className="font-bold text-4xl md:text-4xl lg:text-5xl font-heading ">
+            Speakers
           </h1>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">

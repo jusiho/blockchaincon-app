@@ -109,7 +109,7 @@ interface User {
   actions?: string;
 }
 
-export default function UseTable() {
+export default function UseTable({ edition }: { edition: string }) {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filterValue, setFilterValue] = useState("");
@@ -132,7 +132,7 @@ export default function UseTable() {
     isLoading,
     mutate,
   } = useSWR(
-    `${process.env.NEXT_PUBLIC_URL_LOCAL}/api/registerFree?page=${page}&perPage=${rowsPerPage}&search=${search}&endpoint=records`,
+    `${process.env.NEXT_PUBLIC_URL_LOCAL}/api/registerFree?page=${page}&perPage=${rowsPerPage}&search=${search}&endpoint=records&edition=${edition}`,
     fetcher,
     {
       keepPreviousData: true,
@@ -332,7 +332,7 @@ export default function UseTable() {
       // ...
 
       default:
-        return cellValue;
+        return <span className="dark:text-white">{cellValue}</span>;
     }
   }, []);
 
