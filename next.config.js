@@ -6,7 +6,7 @@ const nextConfig = {
         {
           protocol: "https",
           port: "",
-          hostname: "wealthexpo.la",
+          hostname: "blockchaincon.la",
           // pathname: "/uploads/**",
         },
         {
