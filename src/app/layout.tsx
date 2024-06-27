@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "./providers";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import AuthContext from "./Providers/NextAuth";
+import NavBar from "./NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,11 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={inter.className}>
         <AuthContext>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {/* <ThemeSwitcher /> */}
+            <NavBar />
             {children}
           </ThemeProvider>
         </AuthContext>
