@@ -38,7 +38,7 @@ export default function NavBar() {
           <NavbarBrand>
             <Link href="/">
               <Image
-                src="/landing/wealthexpo.png"
+                src="/landing/logo-main.png"
                 alt="Logo"
                 width={100}
                 height={100}
@@ -51,7 +51,7 @@ export default function NavBar() {
           <NavbarBrand>
             <Link href="/">
               <Image
-                src="/landing/wealthexpo.png"
+                src="/landing/logo-main.png"
                 alt="Logo"
                 width={150}
                 height={150}
