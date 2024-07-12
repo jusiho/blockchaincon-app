@@ -21,13 +21,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <AuthContext>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+        >
+          <AuthContext>
             {/* <ThemeSwitcher /> */}
             <NavBar />
             {children}
-          </ThemeProvider>
-        </AuthContext>
+          </AuthContext>
+        </ThemeProvider>
       </body>
     </html>
   );
